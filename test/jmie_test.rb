@@ -4,6 +4,12 @@ require "jmie"
 
 describe JMIE do
 
+  describe "empty" do
+    it "should reject an empty document" do
+      assert_raises(RuntimeError) { JMIE.parse("") }
+    end
+  end
+
   describe "literals" do
     it "should parse nil" do
       assert_equal nil, JMIE.parse("nil")
@@ -15,6 +21,10 @@ describe JMIE do
 
     it "should parse false" do
       assert_equal false, JMIE.parse("false")
+    end
+
+    it "should reject other literals" do
+      assert_raises(RuntimeError) { JMIE.parse("foo") }
     end
   end
 
@@ -55,14 +65,15 @@ describe JMIE do
 
     it "should parse exponential notation" do
       assert_equal 2.3e-10, JMIE.parse("2.3e-10")
-      assert_equal 2.3e10, JMIE.parse("2.3e10")
       assert_equal 2.3e10, JMIE.parse("2.3e+10")
+      assert_equal 2.3e10, JMIE.parse("2.3e10")
+      assert_equal 2.3e10, JMIE.parse("2.3E10")
     end
   end
 
   describe "strings" do
     it "should parse simple strings" do
-      assert_equal "foo", JMIE.parse("'foo'")
+      assert_equal "foo bar", JMIE.parse("'foo bar'")
     end
 
     it "should parse unicode strings" do
@@ -74,10 +85,10 @@ describe JMIE do
     it "should parse multiline strings" do
       doc =
 %{"
-   one
-   two
-   three}
-      assert_equal "one\ntwo\nthree", JMIE.parse(doc)
+   one house
+   two houses
+   three houses}
+      assert_equal "one house\ntwo houses\nthree houses", JMIE.parse(doc)
     end
   end
 
@@ -137,7 +148,7 @@ describe JMIE do
       assert_equal Hash[x: {a: 1, b: 2}, y: {}, z: [true, false]], JMIE.parse(doc)
     end
 
-    it "should reject missing keys" do
+    it "should reject empty keys" do
       doc =
 "{
    a: 1

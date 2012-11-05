@@ -1,24 +1,17 @@
 module JMIE
   class Lines
+    attr_reader :current, :num
+
     def initialize(file)
-      @file, @line, @num = file, file.gets, 1
+      @file, @current, @num = file, file.gets, 1
     end
 
     def empty?
-      @line.nil?
-    end
-
-    def current
-      @line
-    end
-
-    def num
-      @num
+      @current.nil?
     end
 
     def next
-      prev, @line, @num = @line, @file.gets, @num + 1
-      prev
+      @current, @num = @file.gets, @num + 1
     end
   end
 end
