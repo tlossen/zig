@@ -3,10 +3,10 @@
 $:.unshift File.expand_path('../lib', File.dirname(__FILE__))
 
 require "json"
-require "jmie"
+require "zig"
 
 data = JSON.parse(File.read(ARGV[0]))
-JMIE.print(data)
+ZIG.print(data)
 
 
 

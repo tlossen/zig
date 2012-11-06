@@ -1,4 +1,4 @@
-class JMIE::Formatter
+class ZIG::Formatter
 
   INDENT = "   "
 

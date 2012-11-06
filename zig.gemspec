@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'jmie/version'
+require 'zig/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "jmie"
-  gem.version       = JMIE::VERSION
+  gem.name          = "zig"
+  gem.version       = ZIG::VERSION
   gem.authors       = ["Tim Lossen"]
   gem.email         = ["tim@lossen.de"]
   gem.description   = %q{TODO: Write a gem description}

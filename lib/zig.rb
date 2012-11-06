@@ -1,11 +1,11 @@
-require "jmie/version"
-require "jmie/lines"
-require "jmie/parser"
-require "jmie/formatter"
+require "zig/version"
+require "zig/lines"
+require "zig/parser"
+require "zig/formatter"
 
 require "stringio"
 
-module JMIE
+module ZIG
 
   def self.parse(string)
     lines = Lines.new(StringIO.new(string))

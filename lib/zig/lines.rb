@@ -1,4 +1,4 @@
-module JMIE
+module ZIG
   class Lines
     attr_reader :current, :num
 

@@ -1,4 +1,4 @@
-module JMIE
+module ZIG
   class Parser
 
     FULL_LINE = /^( *)(.*)$/
