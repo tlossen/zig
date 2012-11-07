@@ -1,6 +1,6 @@
 class ZIG::Formatter
 
-  INDENT = "   "
+  INDENT = " " * 2
 
   def self.print_hash(indent, hash)
     print "{\n"
