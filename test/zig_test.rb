@@ -85,9 +85,9 @@ describe ZIG do
     it "should parse multiline strings" do
       doc =
 %{"
-   one house
-   two houses
-   three houses}
+  one house
+  two houses
+  three houses}
       assert_equal "one house\ntwo houses\nthree houses", ZIG.parse(doc)
     end
   end
@@ -101,22 +101,22 @@ describe ZIG do
     it "should parse a list of simple values" do
       doc =
 "[
-   1
-   2
-   3"
+  1
+  2
+  3"
       assert_equal [1, 2, 3], ZIG.parse(doc)
     end
 
     it "should parse a list of complex values" do
       doc =
 "[
-   [
-      23
-      42
-   [
-   {
-      a: 1
-      b: 2"
+  [
+    23
+    42
+  [
+  {
+    a: 1
+    b: 2"
       assert_equal [[23, 42], [], {a: 1, b: 2}], ZIG.parse(doc)
     end
   end
@@ -129,31 +129,31 @@ describe ZIG do
     it "should parse a hash with simple values" do
       doc =
 "{
-   a: 1
-   b: 2
-   c: 3"
+  a: 1
+  b: 2
+  c: 3"
       assert_equal Hash[a: 1, b: 2, c: 3], ZIG.parse(doc)
     end
 
     it "should parse a hash with complex values" do
       doc =
 "{
-   x: {
-      a: 1
-      b: 2
-   y: {
-   z: [
-      true
-      false"
+  x: {
+    a: 1
+    b: 2
+  y: {
+  z: [
+    true
+    false"
       assert_equal Hash[x: {a: 1, b: 2}, y: {}, z: [true, false]], ZIG.parse(doc)
     end
 
     it "should reject empty keys" do
       doc =
 "{
-   a: 1
-   : 2
-   c: 3"
+  a: 1
+  : 2
+  c: 3"
       assert_raises(RuntimeError) { ZIG.parse(doc) }
     end
   end
