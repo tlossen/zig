@@ -159,6 +159,41 @@ describe ZIG do
   end
 
   describe "comments" do
+    it "should skip comment lines inside hashes" do
+      doc =
+"{
+  a: 1
+  #b: 2
+  c: 3"
+      assert_equal Hash[a: 1, c: 3], ZIG.parse(doc)
+    end
+
+    it "should skip comment lines inside arrays" do
+      doc =
+"[
+  'one'
+  #'two'
+  'three'"
+      assert_equal %w[one three], ZIG.parse(doc)
+    end
+
+    it "should ignore comment lines inside multiline strings" do
+      doc =
+%{"
+  one house
+  #two houses
+  three houses}
+      assert_equal "one house\n#two houses\nthree houses", ZIG.parse(doc)
+    end
+    it "should reject comments if not properly idented" do
+      doc =
+"{
+  a: 1
+   # TODO: check c
+  c: 3"
+      assert_raises(RuntimeError) { ZIG.parse(doc) }
+    end
+
   end
 
 end

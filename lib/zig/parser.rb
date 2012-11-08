@@ -15,15 +15,18 @@ class ZIG::Parser
       return object if spaces.size < indent
       raise "[line #{lines.num}] illegal indent" if spaces.size > indent
       lines.next
-      if object.is_a?(Hash)
-        key, value = value.scan(KEY_VALUE).flatten
-        raise "[line #{lines.num}] missing key" if key.nil?
-        object[key.strip.to_sym] = parse_value(indent, lines, value)
-      elsif object.is_a?(Array)
-        object << parse_value(indent, lines, value)
-      else
+      if object.is_a?(String)
         object << "\n" unless object.empty?
         object << value
+      else
+        next if value[0] == '#'
+        if object.is_a?(Hash)
+          key, value = value.scan(KEY_VALUE).flatten
+          raise "[line #{lines.num}] missing key" if key.nil?
+          object[key.strip.to_sym] = parse_value(indent, lines, value)
+        else
+          object << parse_value(indent, lines, value)
+        end
       end
     end
   end
