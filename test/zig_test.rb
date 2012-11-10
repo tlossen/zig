@@ -159,10 +159,23 @@ describe ZIG do
   end
 
   describe "comments" do
+    it "should skip comment lines at the start of a document" do
+      doc =
+"# IMPORTANT
+{
+  a: 1
+  b: 2
+  c: 3"
+      assert_equal Hash[a: 1, b: 2, c: 3], ZIG.parse(doc)
+    end
+    
+    
+    
     it "should skip comment lines inside hashes" do
       doc =
 "{
   a: 1
+  #b: 2
   #b: 2
   c: 3"
       assert_equal Hash[a: 1, c: 3], ZIG.parse(doc)
@@ -172,6 +185,7 @@ describe ZIG do
       doc =
 "[
   'one'
+  #'two'
   #'two'
   'three'"
       assert_equal %w[one three], ZIG.parse(doc)

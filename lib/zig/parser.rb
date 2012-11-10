@@ -48,4 +48,12 @@ class ZIG::Parser
     end
   end
 
+  def self.parse_document(lines)
+    raise("cannot parse empty document") if lines.empty?
+    lines.next while lines.current[0] == '#'
+    start = lines.current
+    lines.next
+    return parse_value(0, lines, start)
+  end
+
 end
