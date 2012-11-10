@@ -107,6 +107,15 @@ describe ZIG do
       assert_equal [1, 2, 3], ZIG.parse(doc)
     end
 
+    it "should parse nested empty lists" do
+      doc =
+"[
+  [
+  [
+  ["
+      assert_equal [[], [], []], ZIG.parse(doc)
+    end
+
     it "should parse a list of complex values" do
       doc =
 "[

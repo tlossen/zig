@@ -18,15 +18,14 @@ class ZIG::Parser
       if object.is_a?(String)
         object << "\n" unless object.empty?
         object << value
+      elsif object.is_a?(Array)
+        next if value[0] == '#'
+        object << parse_value(indent, lines, value)
       else
         next if value[0] == '#'
-        if object.is_a?(Hash)
-          key, value = value.scan(KEY_VALUE).flatten
-          raise "[line #{lines.num}] missing key" if key.nil?
-          object[key.strip.to_sym] = parse_value(indent, lines, value)
-        else
-          object << parse_value(indent, lines, value)
-        end
+        key, value = value.scan(KEY_VALUE).flatten
+        raise "[line #{lines.num - 1}] missing key" if key.nil?
+        object[key.strip.to_sym] = parse_value(indent, lines, value)
       end
     end
   end
