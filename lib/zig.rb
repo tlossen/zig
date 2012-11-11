@@ -2,6 +2,7 @@ require "zig/version"
 require "zig/lines"
 require "zig/parser"
 require "zig/formatter"
+require "zig/syntax_error"
 
 require "stringio"
 
@@ -12,8 +13,11 @@ module ZIG
     Parser.parse_document(lines)
   end
 
-  def self.print(data)
-    Formatter.print_value("", data)
+  def self.generate(data)
+    out = StringIO.new
+    Formatter.print_value(out, "", data)
+    out.rewind
+    out.read
   end
 
 end

@@ -13,7 +13,7 @@ class ZIG::Parser
       return object if lines.empty?
       spaces, value = lines.current.scan(FULL_LINE).flatten
       return object if spaces.size < indent
-      raise "[line #{lines.num}] illegal indent" if spaces.size > indent
+      raise ZIG::SyntaxError, "[line #{lines.num}] illegal indent" if spaces.size > indent
       lines.next
       if object.is_a?(String)
         object << "\n" unless object.empty?
@@ -24,7 +24,7 @@ class ZIG::Parser
       else
         next if value[0] == '#'
         key, value = value.scan(KEY_VALUE).flatten
-        raise "[line #{lines.num - 1}] missing key" if key.nil?
+        raise ZIG::SyntaxError, "[line #{lines.num - 1}] missing key" if key.nil?
         object[key.strip.to_sym] = parse_value(indent, lines, value)
       end
     end
@@ -43,12 +43,12 @@ class ZIG::Parser
     when INTEGER then text.to_i
     when FLOAT   then text.to_f
     else
-      raise "[line #{lines.num}] illegal value: #{text}"
+      raise ZIG::SyntaxError, "[line #{lines.num}] illegal value: #{text}"
     end
   end
 
   def self.parse_document(lines)
-    raise("cannot parse empty document") if lines.empty?
+    raise ZIG::SyntaxError, "cannot parse empty document" if lines.empty?
     lines.next while lines.current[0] == '#'
     start = lines.current
     lines.next

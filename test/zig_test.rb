@@ -6,7 +6,7 @@ describe ZIG do
 
   describe "empty" do
     it "should reject an empty document" do
-      assert_raises(RuntimeError) { ZIG.parse("") }
+      assert_raises(ZIG::SyntaxError) { ZIG.parse("") }
     end
   end
 
@@ -24,7 +24,7 @@ describe ZIG do
     end
 
     it "should reject other literals" do
-      assert_raises(RuntimeError) { ZIG.parse("foo") }
+      assert_raises(ZIG::SyntaxError) { ZIG.parse("foo") }
     end
   end
 
@@ -163,7 +163,7 @@ describe ZIG do
   a: 1
   : 2
   c: 3"
-      assert_raises(RuntimeError) { ZIG.parse(doc) }
+      assert_raises(ZIG::SyntaxError) { ZIG.parse(doc) }
     end
   end
 
@@ -214,7 +214,7 @@ describe ZIG do
   a: 1
    # TODO: check c
   c: 3"
-      assert_raises(RuntimeError) { ZIG.parse(doc) }
+      assert_raises(ZIG::SyntaxError) { ZIG.parse(doc) }
     end
 
   end

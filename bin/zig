@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require "zig"
+require "optparse"
+
+def fail_with(message)
+  $stderr.puts message
+  exit 1
+end
+
+def parse_zig(file)
+  ZIG::Parser.parse_document(ZIG::Lines.new(File.open(file)))
+rescue ZIG::SyntaxError => e
+  fail_with(e.message)
+end
+
+def parse_json(file)
+  require "json"
+  JSON.parse(File.read(file))
+rescue JSON::ParserError => e
+  fail_with(e.message)
+end
+
+output = nil
+OptionParser.new do |opts|
+  opts.on("-o", "--output [format]", "convert to output format") do |format|
+    output = format
+  end
+end.parse!
+
+_, ending = ARGV[0].split(".")
+data = case ending
+when "zig"
+  parse_zig(ARGV[0])
+when "json"
+  parse_json(ARGV[0])
+end
+
+case output
+when nil
+  # no output
+when "zig"
+  puts ZIG.generate(data)
+when "json"
+  require "json"
+  puts JSON.pretty_generate(data)
+else
+  fail_with("unknown format: #{format}")
+end
